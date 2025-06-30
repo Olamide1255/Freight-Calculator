@@ -721,7 +721,7 @@ console.log('dangerousGoodFee:', dangerousGoodFee);
 
 
   // Admin fee based on weight
-  const ADMIN_FEE_LIMIT = 10000;
+  const ADMIN_FEE_LIMIT = 50000;
   let adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
   console.log('Admin Fee:', adminFee);
 
