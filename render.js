@@ -519,243 +519,190 @@ const weightRates = {
 };
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Populate airline dropdown
-  const airlineSelect = document.getElementById('airline').value;
-  console.log ('airlineSelect');
-  console.log (airlineSelect);
-  Object.keys(destinations).forEach(function(airline) {
-    const option = document.createElement('option');
-    option.value = airline;
-    option.textContent = airline;
-    airlineSelect.appendChild(option);
-  });
+// Content types (to avoid duplication)
+const contentTypes = ["general", "dangerous", "perishable", "fragile", "radioactive"];
 
-  // Populate content type dropdown
-  const contentSelect = document.getElementById('content');
-  Object.keys(weightRates).forEach(function(content) {
-    const option = document.createElement('option');
-    option.value = content;
-    option.textContent = content;
-    contentSelect.appendChild(option);
-  });
+document.addEventListener('DOMContentLoaded', function() {
+    // Populate content type dropdown
+    const contentSelect = document.getElementById('content');
+    contentTypes.forEach(function(content) {
+        const option = document.createElement('option');
+        option.value = content;
+        option.textContent = content.charAt(0).toUpperCase() + content.slice(1);
+        contentSelect.appendChild(option);
+    });
 });
 
 // Update destinations based on selected airline
 document.getElementById('airline').addEventListener('change', function() {
-  const selectedAirline = this.value;
-  const destinationSelect = document.getElementById('destination');
-
-  // Clear existing options
-  destinationSelect.innerHTML = '<option value="">Select a destination</option>';
-  
-  if (destinations[selectedAirline]) {
-    destinations[selectedAirline].forEach(function(destination) {
-      const option = document.createElement('option');
-      option.value = destination;
-      option.textContent = destination;
-      destinationSelect.appendChild(option);
-      console.log('Adding Destination:', destination); // Log added destination
-            });
-        } else {
-            console.log('No destinations found for selected airline:', selectedAirline);
-        }
-    });
-
- 
+    const selectedAirline = this.value;
+    const destinationDatalist = document.getElementById('destination-options');
+    
+    // Clear existing options
+    destinationDatalist.innerHTML = '';
+    
+    if (destinations[selectedAirline]) {
+        destinations[selectedAirline].forEach(function(destination) {
+            const option = document.createElement('option');
+            option.value = destination;
+            destinationDatalist.appendChild(option);
+            console.log('Adding Destination:', destination);
+        });
+    } else {
+        console.log('No destinations found for selected airline:', selectedAirline);
+    }
+});
 
 // Calculate total payment
 document.getElementById('calculate-button').addEventListener('click', function() {
-  const airlineElement = document.getElementById('airline');
-  const airline = airlineElement.options[airlineElement.selectedIndex].value;
-  const destination = document.getElementById('destination').value;
-  const weight = parseFloat(document.getElementById('weight').value);
-  const exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
-  const contentType = document.getElementById('content').value;
-  const houseAirwaybill = document.getElementById('houseAirwaybill').checked;
-  console.log('House Airwaybill Checked:', houseAirwaybill);
+    const airline = document.getElementById('airline').value;
+    const destination = document.getElementById('destination-input').value;
+    const weight = parseFloat(document.getElementById('weight').value);
+    const exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
+    const contentType = document.getElementById('content').value;
+    const houseAirwaybill = document.getElementById('houseAirwaybill').checked;
 
-   // Debugging: log the airline, contentType, destination, and weightRates
-   console.log('Airline:', airline);
-   console.log('Content Type:', contentType);
-   console.log('Destination:', destination);
-   console.log('weight:', weight);
-   console.log('House Airwaybill Checked:', houseAirwaybill);
-   
+    // Debugging logs
+    console.log('Airline:', airline);
+    console.log('Content Type:', contentType);
+    console.log('Destination:', destination);
+    console.log('Weight:', weight);
+    console.log('House Airwaybill Checked:', houseAirwaybill);
 
-// Event listener for button click
-document.getElementById('calculate-button').addEventListener('click', function() {
-  const weight = parseFloat(document.getElementById('weight').value);
-  const exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
-  // const airline = document.getElementById('airline').value;
-  const destination = document.getElementById('destination').value;
-  const houseAirwaybill = document.getElementById('houseAirwaybill').checked;
-  const contentType = document.getElementById('content').value;
-  const airline = document.getElementById('airline').value;
+    // Error handling for missing fields
+    if (!weight || !exchangeRate || !destination || !contentType || !airline || airline === "#") {
+        document.getElementById('error-message').innerText = 'Please fill in all required fields.';
+        document.getElementById('error-message').style.display = 'block';
+        return;
+    } else {
+        document.getElementById('error-message').style.display = 'none';
+    }
 
-  
-  // const weightRate = weightRates[airline]?.[contentType]?.[destination];
-  // console.log('Weight Rates:', weightRate ); // Check if weightRates for the selected airline exist
+    // Get weightRate array based on airline, contentType, and destination
+    const rateArray = weightRates[airline]?.[contentType]?.[destination];
 
-  // Error handling for missing fields
-  if (!weight || !exchangeRate || !destination || !contentType) {
-    document.getElementById('error-message').innerText = 'Please fill in all required fields.';
-    return;
-  } else {
-    document.getElementById('error-message').innerText = '';
-  }
-  console.log('airline');
-  console.log (airline);
-  // Get weightRate array based on airline, contentType, and destination
-  const rateArray = weightRates[airline]?.[contentType]?.[destination];
+    // Validate rateArray
+    if (!rateArray) {
+        document.getElementById('error-message').innerText = 'Invalid destination or rate array.';
+        document.getElementById('error-message').style.display = 'block';
+        return;
+    }
 
-  // Validate rateArray
-  if (!rateArray || rateArray.length < 6) {
-    document.getElementById('error-message').innerText = 'Invalid destination or rate array.';
-    return;
-  }
- 
-
-
-  // Determine weight rate based on weight ranges
-  // weightRate = 0;
-  let weightRate = 0;
-  if (airline== 'Turkish Airlines') {
-// weightRate for Turkish Airlines
-
+    // Determine weight rate based on weight ranges
+    let weightRate = 0;
+    
+    if (airline === 'Turkish Airlines') {
         if (weight >= 1 && weight <= 19) {
-          weightRate = rateArray[0];
+            weightRate = rateArray[0];
         } else if (weight >= 20 && weight <= 44) {
-          weightRate = rateArray[1];
+            weightRate = rateArray[1];
         } else if (weight >= 45 && weight <= 99) {
-          weightRate = rateArray[2];
+            weightRate = rateArray[2];
         } else if (weight >= 100 && weight <= 499) {
-          weightRate = rateArray[3];
+            weightRate = rateArray[3];
         } else if (weight >= 500 && weight <= 999) {
-          weightRate = rateArray[4];
+            weightRate = rateArray[4];
         } else if (weight >= 1000) {
-          weightRate = rateArray[5];
+            weightRate = rateArray[5];
         } else {
-          document.getElementById('error-message').innerText = 'Invalid weight.';
-          return;
+            document.getElementById('error-message').innerText = 'Invalid weight.';
+            document.getElementById('error-message').style.display = 'block';
+            return;
         }
-}
-else if(airline== 'Uganda Airlines'){
-  
-  console.log ('weightRate')
-  console.log(weightRate);
-  if (weight >= 0.1 && weight <= 30) {
-    weightRate = rateArray[0];
-  } else if (weight >= 31 && weight <= 44) {
-    weightRate = rateArray[1];
-  } else if (weight >= 45 && weight <= 99) {
-    weightRate = rateArray[2];
-  } else if (weight >= 100 && weight <= 249) {
-    weightRate = rateArray[3];
-  } else if (weight >= 250 && weight <= 499) {
-    weightRate = rateArray[4];
-  } else if (weight >=500 && weight<= 999) {
-    weightRate = rateArray[5];
-  } else if (weight >=1000 ) {
-    weightRate = rateArray[6];
-  } else {
-    document.getElementById('error-message').innerText = 'Invalid weight.';
-    return;
-  }
- 
-}else{
-  weight=0
-}
+    } else if (airline === 'Uganda Airlines') {
+        if (weight >= 0.1 && weight <= 30) {
+            weightRate = rateArray[0];
+        } else if (weight >= 31 && weight <= 44) {
+            weightRate = rateArray[1];
+        } else if (weight >= 45 && weight <= 99) {
+            weightRate = rateArray[2];
+        } else if (weight >= 100 && weight <= 249) {
+            weightRate = rateArray[3];
+        } else if (weight >= 250 && weight <= 499) {
+            weightRate = rateArray[4];
+        } else if (weight >= 500 && weight <= 999) {
+            weightRate = rateArray[5];
+        } else if (weight >= 1000) {
+            weightRate = rateArray[6];
+        } else {
+            document.getElementById('error-message').innerText = 'Invalid weight.';
+            document.getElementById('error-message').style.display = 'block';
+            return;
+        }
+    }
 
-console.log(weightRate);
+    console.log('Weight Rate:', weightRate);
 
-  // Calculate total cost
-  const totalCost = calculateFreight(weight, weightRate, exchangeRate, contentType, airline, destination, houseAirwaybill);
-  console.log(`Total Price: ₦${totalCost}`);
-  console.log('House Airwaybill Fee Applied:', houseAirwaybill ? 'Yes' : 'No');
+    // Calculate total cost
+    const totalCost = calculateFreight(weight, weightRate, exchangeRate, contentType, airline, destination, houseAirwaybill);
+    console.log(`Total Price: ₦${totalCost}`);
+    console.log('House Airwaybill Fee Applied:', houseAirwaybill ? 'Yes' : 'No');
 
-
-  // Display result
-  document.getElementById('result').innerText = `Total Payment: ₦${totalCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // Display result
+    document.getElementById('result').innerText = `Total Payment: ₦${totalCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 });
 
 // Function to calculate total price for freight
 function calculateFreight(weight, weightRate, exchangeRate, contentType, airline, destination, houseAirwaybill) {
-  // Initialize fees
-  const CGC_AIRWAYBILL_FEE = 30 * exchangeRate;
-  console.log('CGC_AIRWAYBILL_FEE:', CGC_AIRWAYBILL_FEE);
+    // Initialize fees
+    const CGC_AIRWAYBILL_FEE = 30 * exchangeRate;
+    console.log('CGC_AIRWAYBILL_FEE:', CGC_AIRWAYBILL_FEE);
 
-  const HOUSE_AIRWAYBILL_FEE = houseAirwaybill ? 35 * exchangeRate : 0;
-  console.log('HOUSE_AIRWAYBILL_FEE:', HOUSE_AIRWAYBILL_FEE);
+    const HOUSE_AIRWAYBILL_FEE = houseAirwaybill ? 35 * exchangeRate : 0;
+    console.log('HOUSE_AIRWAYBILL_FEE:', HOUSE_AIRWAYBILL_FEE);
 
-  const STAMP_DUTY_FEE = (destination === 'IST' || destination === 'AMM' || destination === 'ECN') ? 10 * exchangeRate : 0;
-  const RADIOACTIVE_FEE = contentType === 'radioactive' ? 75 * exchangeRate : 0;
-  const transictFee = 
-   airline =='Uganda Airlines' && (destination === 'BJM' || destination === 'BOM' || destination === 'DAR' || destination === 'DXB' || 
-   destination === 'FIH' || destination === 'JNB' || destination === 'JRO' || destination === 'JUB' || 
-   destination === 'MBA' || destination === 'MGQ' || destination === 'NBO' || destination === 'ZNZ') 
-   ? (weight < 45 ? 5 * exchangeRate : 0.05 * exchangeRate * weight) 
-   : 0; 
-  
+    const STAMP_DUTY_FEE = (destination === 'IST' || destination === 'AMM' || destination === 'ECN') ? 10 * exchangeRate : 0;
+    const RADIOACTIVE_FEE = contentType === 'radioactive' ? 75 * exchangeRate : 0;
+    
+    const transictFee = 
+        airline === 'Uganda Airlines' && (destination === 'BJM' || destination === 'BOM' || destination === 'DAR' || destination === 'DXB' || 
+        destination === 'FIH' || destination === 'JNB' || destination === 'JRO' || destination === 'JUB' || 
+        destination === 'MBA' || destination === 'MGQ' || destination === 'NBO' || destination === 'ZNZ') 
+        ? (weight < 45 ? 5 * exchangeRate : 0.05 * exchangeRate * weight) 
+        : 0; 
+    
+    const mcc = airline === 'Uganda Airlines' && (destination === 'JUB') 
+        ? (weight < 45 ? 5 * exchangeRate : 0.05 * exchangeRate * weight) 
+        : 0;
 
-   const mcc = airline='Uganda Airlines' && (destination === 'JUB')? (weight < 45 ? 5 * exchangeRate : 0.05 * exchangeRate * weight) 
-   : 0;
+    // Dangerous goods fee calculations
+    const dangerousGoodFee = contentType === 'dangerous' 
+        ? (airline === 'Turkish Airlines' 
+            ? 35 * exchangeRate 
+            : (airline === 'Uganda Airlines' && weight <= 30 
+                ? 200 * exchangeRate 
+                : 50 * exchangeRate)) 
+        : 0;
 
+    console.log('dangerousGoodFee:', dangerousGoodFee);
 
+    // Admin fee based on weight
+    const ADMIN_FEE_LIMIT = 10000;
+    let adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (50 * weight);
+    console.log('Admin Fee:', adminFee);
 
-  // Dangerous goods fee calculations
+    // Calculate freight
+    let freight;
+    if (airline === 'Turkish Airlines' && weight < 20) {
+        freight = weightRate * exchangeRate;
+    } else if (airline === 'Uganda Airlines' && weight < 31) {
+        freight = weightRate * exchangeRate;
+    } else {
+        freight = weight * weightRate * exchangeRate;
+    }
 
-  const dangerousGoodFee = contentType === 'dangerous goods' 
-  ? (airline === 'Turkish Airlines' 
-      ? 35 * exchangeRate 
-      : (airline === 'Uganda Airlines' && weight <= 30 
-          ? 200 * exchangeRate 
-          : 50 * exchangeRate)) 
-  : 0;
+    console.log('Freight:', freight);
 
-console.log('dangerousGoodFee:', dangerousGoodFee);
+    const NCAA = freight * 0.075;
+    console.log('NCAA:', NCAA);
 
+    // Total fees
+    const totalFees = CGC_AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE;
 
+    // Total calculation
+    const total = freight + NCAA + totalFees + adminFee;
+    console.log('Total Fees:', totalFees);
+    console.log('Total Price:', total);
 
-
-
-
-  // Admin fee based on weight
-  const ADMIN_FEE_LIMIT = 50000;
-  let adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
-  console.log('Admin Fee:', adminFee);
-
- 
-  
-
-  // Calculate freight
-
-const freight = airline = 'Turkish Airlines' && (weight < 20) ?  weightRate * exchangeRate: weight * weightRate * exchangeRate;
-  'Uganda Airlines' && (weight < 31) ?  weightRate * exchangeRate: weight * weightRate * exchangeRate;
-  
-
-
-
-console.log('freight:', freight);
-
-  const NCAA = freight * 0.075;
-  console.log('NCAA:', NCAA);
-
-
-
-  // Total fees
-  const totalFees = CGC_AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE;
-
-  // Total calculation
-  const total = freight + NCAA + totalFees + adminFee;
-  console.log('Total Fees:', totalFees);
-  console.log('Total Price:', total);
-
-
- // Format total with commas
- const formattedTotal = total.toLocaleString('en-US');
-
- return formattedTotal;
+    return total;
 }
-
-});
