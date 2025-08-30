@@ -63,11 +63,7 @@
           <label for="content"><i class="fas fa-box"></i> Content Type</label>
           <select id="content" required>
             <option value="">Content Type</option>
-            <option value="general">General</option>
-            <option value="dangerous">Dangerous</option>
-            <option value="perishable">Perishable</option>
-            <option value="fragile">Fragile</option>
-            <option value="radioactive">Radioactive</option>
+            <!-- Options will be populated by JavaScript -->
           </select>
         </div>
 
@@ -95,12 +91,11 @@
           </div>
         </div>
 
-        <button type="button" id="calculate-button">
-          <span class="front">Calculate Price</span>
-        </button>
+        <button type="button" id="calculate-button">Calculate Price</button>
       </form>
       <div id="result">Total Payment: ₦0.00</div>
     </div>
-    <script src="render.js" defer></script>
+
+    <script src="render.js"></script>
   </body>
 </html>
