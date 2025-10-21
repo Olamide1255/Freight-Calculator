@@ -554,7 +554,7 @@ const weightRates = {
 
 
 // Content types (to avoid duplication)
-const contentTypes = ["general", "dangerous", "perishable", "fragile", "radioactive"];
+const contentTypes = ["general", "dangerous", "radioactive"];
 
 document.addEventListener('DOMContentLoaded', function() {
     // Populate content type dropdown
