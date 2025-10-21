@@ -595,6 +595,9 @@ document.getElementById('calculate-button').addEventListener('click', function()
     const exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
     const contentType = document.getElementById('content').value;
     const houseAirwaybill = document.getElementById('houseAirwaybill').checked;
+    const AVISerciceCharge = document.getElementById('AVISerciceCharge').checked;
+    const ConsolidationFee = document.getElementById('ConsolidationFee').checked;
+    const ChangeofConsine = document.getElementById('ChangeofConsine').checked;
 
     // Debugging logs
     console.log('Airline:', airline);
@@ -602,6 +605,9 @@ document.getElementById('calculate-button').addEventListener('click', function()
     console.log('Destination:', destination);
     console.log('Weight:', weight);
     console.log('House Airwaybill Checked:', houseAirwaybill);
+    console.log('AVI Sercice Charge Checked:', AVISerciceCharge);
+    console.log('Consolidation Fee Checked:', ConsolidationFee);
+    console.log('Change of Consine Checked:', ChangeofConsine);
 
     // Error handling for missing fields
     if (!weight || !exchangeRate || !destination || !contentType || !airline || airline === "#") {
@@ -677,13 +683,22 @@ document.getElementById('calculate-button').addEventListener('click', function()
 });
 
 // Function to calculate total price for freight
-function calculateFreight(weight, weightRate, exchangeRate, contentType, airline, destination, houseAirwaybill) {
+function calculateFreight(weight, weightRate, exchangeRate, contentType, airline, destination, houseAirwaybill, AVIServiceCharge, ConsolidationFee, ChangeofConsine) {
     // Initialize fees
     const CGC_AIRWAYBILL_FEE = 30 * exchangeRate;
     console.log('CGC_AIRWAYBILL_FEE:', CGC_AIRWAYBILL_FEE);
 
     const HOUSE_AIRWAYBILL_FEE = houseAirwaybill ? 35 * exchangeRate : 0;
     console.log('HOUSE_AIRWAYBILL_FEE:', HOUSE_AIRWAYBILL_FEE);
+
+    const AVI_SERVICE_CHARGE = AVIServiceCharge  ? 100 * exchangeRate : 0;
+    console.log('AVI_SERVICE_CHARGE:', AVI_SERVICE_CHARGE);
+
+    const CONSOLIDATION_FEE = ConsolidationFee ? 15 * exchangeRate : 0;
+    console.log('CONSOLIDATION_FEE:', CONSOLIDATION_FEE);
+
+    const CHANGE_OF_CONSINE = ChangeofConsine ? 50 * exchangeRate : 0;
+    console.log('CHANGE_OF_CONSINE:', CHANGE_OF_CONSINE);
 
     const STAMP_DUTY_FEE = (destination === 'IST' || destination === 'AMM' || destination === 'ECN') ? 10 * exchangeRate : 0;
     const RADIOACTIVE_FEE = contentType === 'radioactive' ? 75 * exchangeRate : 0;
@@ -731,7 +746,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('NCAA:', NCAA);
 
     // Total fees
-    const totalFees = CGC_AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE;
+    const totalFees = CGC_AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE + AVI_SERVICE_CHARGE + CONSOLIDATION_FEE + CHANGE_OF_CONSINE;
 
     // Total calculation
     const total = freight + NCAA + totalFees + adminFee;
