@@ -716,7 +716,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('CHANGE_OF_CONSINE_FEE:', CHANGE_OF_CONSINE_FEE);
 
     const STAMP_DUTY_FEE = (destination === 'IST' || destination === 'AMM' || destination === 'ECN') ? 10 * exchangeRate : 0;
-    const RADIOACTIVE_FEE = contentType === 'radioactive' ? 75 * exchangeRate : 0;
+    const RADIOACTIVE_FEE = contentType === 'radioactive' ? 80 * exchangeRate : 0;
     
     const transictFee = 
         airline === 'Uganda Airlines' && (destination === 'BJM' || destination === 'BOM' || destination === 'DAR' || destination === 'DXB' || 
@@ -770,4 +770,5 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('Total Price:', total);
 
     return total;
+
 }
