@@ -746,7 +746,15 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('Admin Fee:', adminFee);
 
     // Calculate freight
+
     let freight;
+    // Check if destination requires rate adjustment
+    const specialDestinations = ['DFW', 'SIN', 'LHR', 'DOH'];
+    if (specialDestinations.includes(destination)) {
+        weightRate += 0.3; // add 0.3 to weightRate
+}
+
+// Freight calculation based on airline and weight
     if (airline === 'Turkish Airlines' && weight < 20) {
         freight = weightRate * exchangeRate;
     } else if (airline === 'Uganda Airlines' && weight < 31) {
@@ -770,5 +778,4 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('Total Price:', total);
 
     return total;
-
 }
