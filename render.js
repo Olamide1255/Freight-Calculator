@@ -633,9 +633,9 @@ document.getElementById('calculate-button').addEventListener('click', function()
     let weightRate = 0;
     
     if (airline === 'Turkish Airlines') {
-        if (weight >= 1 && weight <= 19) {
+        if (weight >= 1 && weight <= 21) {
             weightRate = rateArray[0];
-        } else if (weight >= 20 && weight <= 44) {
+        } else if (weight >= 22 && weight <= 44) {
             weightRate = rateArray[1];
         } else if (weight >= 45 && weight <= 99) {
             weightRate = rateArray[2];
@@ -778,4 +778,5 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('Total Price:', total);
 
     return total;
+
 }
