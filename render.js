@@ -755,7 +755,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
 }
 
 // Freight calculation based on airline and weight
-    if (airline === 'Turkish Airlines' && weight < 20) {
+    if (airline === 'Turkish Airlines' && weight <= 20) {
         freight = weightRate * exchangeRate;
     } else if (airline === 'Uganda Airlines' && weight < 31) {
         freight = weightRate * exchangeRate;
@@ -780,3 +780,4 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     return total;
 
 }
+
