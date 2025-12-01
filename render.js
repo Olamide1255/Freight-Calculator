@@ -740,17 +740,34 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
 
     console.log('dangerousGoodFee:', dangerousGoodFee);
 
-    // Admin fee limits by airline
-const ADMIN_FEE_BY_AIRLINE = {
-    "Turkish Airlines": 40000,
-    "Uganda Airlines": 20000
-};
+   let ADMIN_FEE_LIMIT;
 
-// Get admin limit based on selected airline
-const ADMIN_FEE_LIMIT = ADMIN_FEE_BY_AIRLINE[airline];
+// Check airline
+if (airline === "Turkish Airlines") {
+    // Turkish Airlines rule (unchanged)
+    ADMIN_FEE_LIMIT = 40000;
+    adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
+}
 
-// Calculate admin fee
-let adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
+// Uganda Airlines with new tier system
+else if (airline === "Uganda Airlines") {
+
+    if (weight >= 1 && weight <= 44) {
+        adminFee = 10000;
+    } 
+    else if (weight >= 45 && weight <= 99) {
+        adminFee = 15000;
+    } 
+    else if (weight >= 100 && weight <= 499) {
+        adminFee = 20000;
+    } 
+    else if (weight >= 500 && weight <= 999) {
+        adminFee = 25000;
+    } 
+    else if (weight >= 1000) {
+        adminFee = weight * 40;  // ₦40 per kg
+    }
+}
 
 console.log("Admin Fee:", adminFee);
   
@@ -789,6 +806,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
