@@ -743,7 +743,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     // Admin fee limits by airline
 const ADMIN_FEE_BY_AIRLINE = {
     "Turkish Airlines": 40000,
-    "Uganda Airlines": 10000
+    "Uganda Airlines": 20000
 };
 
 // Get admin limit based on selected airline
@@ -789,5 +789,6 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
