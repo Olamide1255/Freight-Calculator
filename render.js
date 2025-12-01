@@ -740,11 +740,20 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
 
     console.log('dangerousGoodFee:', dangerousGoodFee);
 
-    // Admin fee based on weight
-    const ADMIN_FEE_LIMIT = 50000;
-    let adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
-    console.log('Admin Fee:', adminFee);
+    // Admin fee limits by airline
+const ADMIN_FEE_BY_AIRLINE = {
+    "Turkish Airlines": 40000,
+    "Uganda Airlines": 10000
+};
 
+// Get admin limit based on selected airline
+const ADMIN_FEE_LIMIT = ADMIN_FEE_BY_AIRLINE[airline];
+
+// Calculate admin fee
+let adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
+
+console.log("Admin Fee:", adminFee);
+  
     // Calculate freight
 
     let freight;
@@ -780,4 +789,5 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     return total;
 
 }
+
 
