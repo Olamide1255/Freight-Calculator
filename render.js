@@ -703,6 +703,9 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     const CGC_AIRWAYBILL_FEE = 30 * exchangeRate;
     console.log('CGC_AIRWAYBILL_FEE:', CGC_AIRWAYBILL_FEE);
 
+    const AIRWAYBILL_FEE = 25 * exchangeRate; // <-- replace 20 with correct USD value
+    console.log('AIRWAYBILL_FEE:', AIRWAYBILL_FEE);
+
     const HOUSE_AIRWAYBILL_FEE = houseAirwaybill ? 35 * exchangeRate : 0;
     console.log('HOUSE_AIRWAYBILL_FEE:', HOUSE_AIRWAYBILL_FEE);
 
@@ -716,7 +719,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('CHANGE_OF_CONSINE_FEE:', CHANGE_OF_CONSINE_FEE);
 
     const STAMP_DUTY_FEE = (destination === 'IST' || destination === 'AMM' || destination === 'ECN') ? 10 * exchangeRate : 0;
-    const RADIOACTIVE_FEE = contentType === 'radioactive' ? 80 * exchangeRate : 0;
+    const RADIOACTIVE_FEE = contentType === 'radioactive' ? 100 * exchangeRate : 0;
     
     const transictFee = 
         airline === 'Uganda Airlines' && (destination === 'BJM' || destination === 'BOM' || destination === 'DAR' || destination === 'DXB' || 
@@ -732,7 +735,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     // Dangerous goods fee calculations
     const dangerousGoodFee = contentType === 'dangerous' 
         ? (airline === 'Turkish Airlines' 
-            ? 35 * exchangeRate 
+            ? 40 * exchangeRate 
             : (airline === 'Uganda Airlines' && weight <= 30 
                 ? 200 * exchangeRate 
                 : 50 * exchangeRate)) 
@@ -795,7 +798,7 @@ console.log("Admin Fee:", adminFee);
     console.log('NCAA:', NCAA);
 
     // Total fees
-    const totalFees = CGC_AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE + AVI_SERVICE_CHARGE_FEE + CONSOLIDATION_FEE + CHANGE_OF_CONSINE_FEE;
+    const totalFees = CGC_AIRWAYBILL_FEE + AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE + AVI_SERVICE_CHARGE_FEE + CONSOLIDATION_FEE + CHANGE_OF_CONSINE_FEE;
 
 
     // Total calculation
@@ -806,6 +809,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
