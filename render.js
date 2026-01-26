@@ -633,9 +633,9 @@ document.getElementById('calculate-button').addEventListener('click', function()
     let weightRate = 0;
     
     if (airline === 'Turkish Airlines') {
-        if (weight >= 1 && weight <= 21) {
+        if (weight >= 1 && weight <= 20) {
             weightRate = rateArray[0];
-        } else if (weight >= 22 && weight <= 44) {
+        } else if (weight >= 21 && weight <= 44) {
             weightRate = rateArray[1];
         } else if (weight >= 45 && weight <= 99) {
             weightRate = rateArray[2];
@@ -809,6 +809,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
