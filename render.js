@@ -703,7 +703,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     const CGC_AIRWAYBILL_FEE = 30 * exchangeRate;
     console.log('CGC_AIRWAYBILL_FEE:', CGC_AIRWAYBILL_FEE);
 
-    const AIRWAYBILL_FEE = 25 * exchangeRate; // <-- replace 20 with correct USD value
+    const AIRWAYBILL_FEE = (airline === 'Uganda') ? 25 * exchangeRate : 0;
     console.log('AIRWAYBILL_FEE:', AIRWAYBILL_FEE);
 
     const HOUSE_AIRWAYBILL_FEE = houseAirwaybill ? 35 * exchangeRate : 0;
@@ -721,7 +721,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     const TRANSACTION_FEE = 50 ;
     console.log('TRANSACTION_FEE:', TRANSACTION_FEE);
 
-    const HANDLING_FEE = 7.5 * exchangeRate ;
+    const HANDLING_FEE = (airline === 'Uganda') ? 7.5 * exchangeRate : 0;
     console.log('HANDLING_FEE:', HANDLING_FEE);
 
     const STAMP_DUTY_FEE = (destination === 'IST' || destination === 'AMM' || destination === 'ECN') ? 10 * exchangeRate : 0;
@@ -815,6 +815,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
