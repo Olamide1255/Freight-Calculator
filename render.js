@@ -722,7 +722,7 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     console.log('HANDLING_FEE:', HANDLING_FEE);
 
     const AIRWAYBILL_FEE = (airline === 'Turkish Airlines') ? 25 * exchangeRate : 0;
-    console.log('AIRWAYBILL_FEE:', HANDLING_FEE);
+    console.log('AIRWAYBILL_FEE:', AIRWAYBILL_FEE);
     
     
 
@@ -807,7 +807,7 @@ console.log("Admin Fee:", adminFee);
     console.log('NCAA:', NCAA);
 
     // Total fees
-    const totalFees = CGC_AIRWAYBILL_FEE + AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE + AVI_SERVICE_CHARGE_FEE + CONSOLIDATION_FEE + CHANGE_OF_CONSINE_FEE + TRANSACTION_FEE + HANDLING_FEE;
+    const totalFees = CGC_AIRWAYBILL_FEE + AIRWAYBILL_FEE + STAMP_DUTY_FEE + RADIOACTIVE_FEE + dangerousGoodFee + transictFee + mcc + HOUSE_AIRWAYBILL_FEE + AVI_SERVICE_CHARGE_FEE + CONSOLIDATION_FEE + CHANGE_OF_CONSINE_FEE + TRANSACTION_FEE + HANDLING_FEE + AIRWAYBILL_FEE;
 
 
     // Total calculation
@@ -818,6 +818,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
