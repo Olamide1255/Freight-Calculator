@@ -703,8 +703,15 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     const CGC_AIRWAYBILL_FEE = 30 * exchangeRate;
     console.log('CGC_AIRWAYBILL_FEE:', CGC_AIRWAYBILL_FEE);
 
-    const AIRWAYBILL_FEE = (airline === 'Uganda') ? 25 * exchangeRate : 0;
-    console.log('AIRWAYBILL_FEE:', AIRWAYBILL_FEE);
+    let AIRWAYBILL_FEE = 0;
+
+    if (airline === 'Uganda') {
+    AIRWAYBILL_FEE = 0;
+    } else if (airline === 'Turkish Airline') {
+    AIRWAYBILL_FEE = 35 * exchangeRate;
+    }
+
+console.log('AIRWAYBILL_FEE:', AIRWAYBILL_FEE);
 
     const HOUSE_AIRWAYBILL_FEE = houseAirwaybill ? 35 * exchangeRate : 0;
     console.log('HOUSE_AIRWAYBILL_FEE:', HOUSE_AIRWAYBILL_FEE);
@@ -815,6 +822,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
