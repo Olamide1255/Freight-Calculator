@@ -718,8 +718,13 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     const TRANSACTION_FEE = 50 ;
     console.log('TRANSACTION_FEE:', TRANSACTION_FEE);
 
-    const HANDLING_FEE = (airline === 'Uganda') ? 7.5 * exchangeRate : 0;
+    const HANDLING_FEE = (airline === 'Turkish Airlines') ? 7.5 * exchangeRate : 0;
     console.log('HANDLING_FEE:', HANDLING_FEE);
+
+    const AIRWAYBILL_FEE = (airline === 'Turkish Airlines') ? 25 * exchangeRate : 0;
+    console.log('AIRWAYBILL_FEE:', HANDLING_FEE);
+    
+    
 
     const STAMP_DUTY_FEE = (destination === 'IST' || destination === 'AMM' || destination === 'ECN') ? 10 * exchangeRate : 0;
     const RADIOACTIVE_FEE = contentType === 'radioactive' ? 100 * exchangeRate : 0;
@@ -755,14 +760,7 @@ if (airline === "Turkish Airlines") {
     adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
 }
 
-  let AIRWAYBILL_FEE = 0;
 
-if (airline === "Turkish Airline") {
-  AIRWAYBILL_FEE = 25 * exchangeRate;
-}
-
-console.log("AIRWAYBILL_FEE:", AIRWAYBILL_FEE);
-    
 // Uganda Airlines with new tier system
 else if (airline === "Uganda Airlines") {
 
@@ -820,6 +818,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
