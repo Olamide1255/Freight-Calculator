@@ -703,16 +703,6 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     const CGC_AIRWAYBILL_FEE = 30 * exchangeRate;
     console.log('CGC_AIRWAYBILL_FEE:', CGC_AIRWAYBILL_FEE);
 
-    let AIRWAYBILL_FEE = 0;
-
-    if (airline === 'Uganda') {
-    AIRWAYBILL_FEE = 0;
-    } else if (airline === 'Turkish Airline') {
-    AIRWAYBILL_FEE = 35 * exchangeRate;
-    }
-
-console.log('AIRWAYBILL_FEE:', AIRWAYBILL_FEE);
-
     const HOUSE_AIRWAYBILL_FEE = houseAirwaybill ? 35 * exchangeRate : 0;
     console.log('HOUSE_AIRWAYBILL_FEE:', HOUSE_AIRWAYBILL_FEE);
 
@@ -765,6 +755,14 @@ if (airline === "Turkish Airlines") {
     adminFee = (weight <= 200) ? ADMIN_FEE_LIMIT : (200 * weight);
 }
 
+  let AIRWAYBILL_FEE = 0;
+
+if (airline === "Turkish Airline") {
+  AIRWAYBILL_FEE = 25 * exchangeRate;
+}
+
+console.log("AIRWAYBILL_FEE:", AIRWAYBILL_FEE);
+    
 // Uganda Airlines with new tier system
 else if (airline === "Uganda Airlines") {
 
@@ -822,6 +820,7 @@ console.log("Admin Fee:", adminFee);
     return total;
 
 }
+
 
 
 
