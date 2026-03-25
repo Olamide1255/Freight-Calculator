@@ -744,9 +744,8 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
     const dangerousGoodFee = contentType === 'dangerous' 
         ? (airline === 'Turkish Airlines' 
             ? 40 * exchangeRate 
-            : (airline === 'Uganda Airlines' && weight <= 30 
-                ? 200 * exchangeRate 
-                : 50 * exchangeRate)) 
+            : (airline === 'Uganda Airlines'
+                ? 50 * exchangeRate)) 
         : 0;
 
     console.log('dangerousGoodFee:', dangerousGoodFee);
