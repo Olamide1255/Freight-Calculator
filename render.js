@@ -741,12 +741,13 @@ function calculateFreight(weight, weightRate, exchangeRate, contentType, airline
         : 0;
 
     // Dangerous goods fee calculations
-    const dangerousGoodFee = contentType === 'dangerous' 
-        ? (airline === 'Turkish Airlines' 
-            ? 40 * exchangeRate 
-            : (airline === 'Uganda Airlines'
-                ? 50 * exchangeRate)) 
-        : 0;
+const dangerousGoodFee = contentType === 'dangerous'
+    ? (airline === 'Turkish Airlines'
+        ? 40 * exchangeRate
+        : airline === 'Uganda Airlines'
+            ? 50 * exchangeRate
+            : 0)
+    : 0;
 
     console.log('dangerousGoodFee:', dangerousGoodFee);
 
